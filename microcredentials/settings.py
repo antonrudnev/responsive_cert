@@ -25,7 +25,7 @@ SECRET_KEY = 'x^22+gq81@ky026g-9gkj$9$vnqm!rr%se2c%i#e)&_88ep4bd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['54.175.11.175']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -55,8 +55,7 @@ ROOT_URLCONF = 'microcredentials.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from django.views.generic.list import ListView
 
-# Create your views here.
+from .models import Profile
+
+
+class UserListView(ListView):
+
+    def get_queryset(self):
+        return Profile.objects.all()
