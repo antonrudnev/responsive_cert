@@ -8,7 +8,7 @@
     <h1>Users</h1>
 
     {% for profile in object_list %}
-        <li>{{ profile }} - {{ profile.description }}</li>
+        <li>{{ profile.user.first_name }} {{ profile.user.last_name }} - {{ profile.description }}</li>
     {% empty %}
         <li>No users</li>
     {% endfor %}
