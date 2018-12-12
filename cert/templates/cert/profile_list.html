@@ -1,17 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Users</title>
-</head>
-<body>
-    <h1>Users</h1>
+{% extends 'base.html' %}
 
+{% block content %}
+    <h1>Users</h1>
     {% for profile in object_list %}
         <li>{{ profile.user.first_name }} {{ profile.user.last_name }} - {{ profile.description }}</li>
     {% empty %}
         <li>No users</li>
     {% endfor %}
-
-</body>
-</html>
+{% endblock %}
