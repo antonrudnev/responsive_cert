@@ -11,10 +11,14 @@ class Profile(models.Model):
     private_key = models.CharField(max_length=256, null=True, blank=True)
     cert_template = models.TextField(null=True, blank=True)
 
+    def __str__(self):
+        return f'{self.user.first_name} {self.user.last_name}' \
+            if self.user.first_name or self.user.last_name else self.user.username
+
 
 class Credential(models.Model):
-    issuer = models.ForeignKey(Profile, related_name="issuers", on_delete=models.CASCADE)
-    owner = models.ForeignKey(Profile, related_name="owners", on_delete=models.CASCADE)
+    issuer = models.ForeignKey(Profile, related_name='issuers', on_delete=models.CASCADE)
+    owner = models.ForeignKey(Profile, related_name='owners', on_delete=models.CASCADE)
     title = models.CharField(max_length=256, null=False, blank=False)
     cert_content = models.TextField()
     transaction_id = models.TextField()
