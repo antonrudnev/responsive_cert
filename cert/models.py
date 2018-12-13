@@ -20,7 +20,7 @@ class Credential(models.Model):
     issuer = models.ForeignKey(Profile, related_name='issuers', on_delete=models.CASCADE, null=False, blank=False)
     owner = models.ForeignKey(Profile, related_name='owners', on_delete=models.CASCADE, null=False, blank=False)
     title = models.CharField(max_length=256, null=False, blank=False)
-    cert_content = models.TextField(null=False, blank=False)
+    content = models.TextField(null=False, blank=False)
     transaction_id = models.TextField(null=True, blank=True)
     created_on = models.DateTimeField(default=timezone.now, null=False, blank=False)
     status = models.CharField(max_length=30, null=False, blank=False)
