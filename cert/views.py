@@ -23,6 +23,7 @@ class CredentialListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(CredentialListView, self).get_context_data(**kwargs)
         context.update({'profile': Profile.objects.filter(user__id=self.kwargs['pk']).first()})
+        context.update({'issued_credentials': Credential.objects.filter(issuer__user_id=self.kwargs['pk'])})
         return context
 
 

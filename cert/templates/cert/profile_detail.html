@@ -7,7 +7,10 @@
     {% endif %}
     <h3>{{ object.description }}</h3>
     <div>
-        <a href="{% url 'cert-user-credential-list' object.user_id %}">Certificates</a>
+        <button type="button" href="">Issue certificate</button>
+    </div>
+    <div>
+        <a href="{% url 'cert-user-credential-list' object.user_id %}">List certificates</a>
     </div>
     <div>
         <a href="{% url 'cert-user-list' %}">Back</a>
