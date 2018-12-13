@@ -11,24 +11,20 @@ class UserListView(LoginRequiredMixin, ListView):
         return Profile.objects.all()
 
 
-class UserDetailView(DetailView):
-
+class UserDetailView(LoginRequiredMixin, DetailView):
     model = Profile
 
-    # def get_queryset(self):
-    #     return Profile.objects.filter(user_id=self.kwargs['user_id']).first()
-    # def get_context_data(self, **kwargs):
-    #     context = super(UserDetailView, self).get_context_data(**kwargs)
-    #     context['profile'] = Profile.objects.filter(user__id=self.kwargs['user_id']).first()
-    #     return context
 
-
-class CredentialListView(ListView):
+class CredentialListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
-        return Credential.objects.filter(owner__user_id=self.kwargs['user_id'])
+        return Credential.objects.filter(owner__user_id=self.kwargs['pk'])
 
     def get_context_data(self, **kwargs):
         context = super(CredentialListView, self).get_context_data(**kwargs)
-        context.update({'profile': Profile.objects.filter(user__id=self.kwargs['user_id']).first()})
+        context.update({'profile': Profile.objects.filter(user__id=self.kwargs['pk']).first()})
         return context
+
+
+class CredentialDetailView(LoginRequiredMixin, DetailView):
+    model = Credential

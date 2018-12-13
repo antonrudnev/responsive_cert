@@ -2,8 +2,14 @@
 
 {% block content %}
     <h1>{{ object }}</h1>
-    <h2>{{ object.description }}</h2>
-    <h2>{{ object.organization }}</h2>
-    <a href="{% url 'cert-credential-list' object.user_id %}">Certificates</a>
-    <a href="{% url 'cert-user-list' %}">Back</a>
+    {% if object.organization %}
+        <h2>{{ object.organization }}</h2>
+    {% endif %}
+    <h3>{{ object.description }}</h3>
+    <div>
+        <a href="{% url 'cert-user-credential-list' object.user_id %}">Certificates</a>
+    </div>
+    <div>
+        <a href="{% url 'cert-user-list' %}">Back</a>
+    </div>
 {% endblock %}

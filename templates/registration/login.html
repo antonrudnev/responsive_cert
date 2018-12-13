@@ -13,6 +13,7 @@
         {{ form.as_p }}
         <input id="feedback-submit" type="submit" value="Login">
     </form>
+    <div>Click <a href="{% url 'admin:index' %}">here</a> if you are administrator</div>
 {% endblock %}
 
 {% block logout %}{% endblock %}
