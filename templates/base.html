@@ -9,6 +9,9 @@
         {% block content %}
         {% endblock %}
     </main>
-    {% block logout %}<a href="/logout/">Logout</a>{% endblock %}
+    {% block logout %}
+        <br/>
+        <a href="/logout/">Logout</a> {{ user.get_full_name }}
+    {% endblock %}
 </body>
 </html>
