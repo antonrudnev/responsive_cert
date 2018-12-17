@@ -6,6 +6,8 @@ from django.views.generic.list import ListView
 
 from .models import Profile, Credential
 
+import json
+
 
 class UserListView(LoginRequiredMixin, ListView):
 
@@ -31,6 +33,11 @@ class CredentialListView(LoginRequiredMixin, ListView):
 
 class CredentialDetailView(LoginRequiredMixin, DetailView):
     model = Credential
+
+    def get_context_data(self, **kwargs):
+        context = super(CredentialDetailView, self).get_context_data(**kwargs)
+        context.update({'content': json.loads(Credential.objects.get(pk=self.kwargs['pk']).content)})
+        return context
 
 
 class CredentialCreateView(LoginRequiredMixin, CreateView):
