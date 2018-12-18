@@ -36,7 +36,8 @@ class CredentialDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(CredentialDetailView, self).get_context_data(**kwargs)
-        context.update({'content': json.loads(Credential.objects.get(pk=self.kwargs['pk']).content)})
+        content = Credential.objects.get(pk=self.kwargs['pk']).content
+        context.update({'content': json.loads(content if content else '{}')})
         return context
 
 
