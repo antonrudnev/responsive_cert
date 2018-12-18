@@ -5,7 +5,7 @@ from . import views
 urlpatterns = [
     path('users/', views.UserListView.as_view(), name='cert-user-list'),
     path('users/<pk>/', views.UserDetailView.as_view(), name='cert-user-detail'),
-    path('users/<pk>/credentials/', views.CredentialListView.as_view(), name='cert-user-credential-list'),
-    path('users/<pk>/credentials/create/', views.CredentialCreateView.as_view(), name='cert-user-credential-create'),
+    path('users/<pk>/issue/', views.CredentialCreateView.as_view(), name='cert-user-credential-create'),
+    path('credentials/', views.UserDetailView.as_view(), name='cert-user-detail'),
     path('credentials/<pk>/', views.CredentialDetailView.as_view(), name='cert-credential-detail'),
 ]

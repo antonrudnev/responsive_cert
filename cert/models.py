@@ -15,6 +15,12 @@ class Profile(models.Model):
         return f'{self.user.first_name} {self.user.last_name}' \
             if self.user.first_name or self.user.last_name else self.user.username
 
+    class Meta:
+        permissions = (
+            ('view_issuer_profiles', 'Can see users who issue credentials'),
+            ('view_owner_profiles', 'Can see users who own credentials'),
+        )
+
 
 class Credential(models.Model):
     issuer = models.ForeignKey(Profile, related_name='issuers', on_delete=models.CASCADE, null=False, blank=False)
@@ -27,3 +33,11 @@ class Credential(models.Model):
 
     def __str__(self):
         return f'{self.title} ({self.owner})'
+
+    class Meta:
+        permissions = (
+            ('view_all_credentials', 'Can see all credentials associated with the user'),
+            ('issue_credentials', 'Can issue credentials to other users'),
+            ('own_credentials', 'Can own credentials issued by other users'),
+            ('verify_credentials', 'Can verify credentials'),
+        )

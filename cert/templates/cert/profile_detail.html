@@ -1,19 +1,39 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{{ object }}</h1>
-    {% if object.organization %}
-        <h2>{{ object.organization }}</h2>
+    <h1>{{ profile }}</h1>
+    <h3>{{ profile.description|title }}
+        {% if profile.organization %}
+            on behalf of {{ profile.organization }}
+        {% endif %}
+    </h3>
+    {% if owned_credentials %}
+        <h3>Certificates:</h3>
+        {% for credential in owned_credentials %}
+            <li>
+                <span>{{ credential.title }} ({{ credential.issuer.organization }})</span>
+                <a href="{% url 'cert-credential-detail' credential.id %}">View</a>
+            </li>
+        {% endfor %}
     {% endif %}
-    <h3>{{ object.description }}</h3>
+    {% if issued_credentials %}
+        <h3>Certificates issued to other users:</h3>
+        {% for credential in issued_credentials %}
+            <li>
+                {{ credential.title }} ({{ credential.owner }})
+                <a href="{% url 'cert-credential-detail' credential.id %}">View</a>
+            </li>
+        {% endfor %}
+    {% endif %}
+    {% if not owned_credentials and not issued_credentials %}
+        <div>No certificates to display</div>
+    {% endif %}
     <div>
-        <a href="{% url 'cert-user-credential-list' object.user_id %}">List certificates</a>
-    </div>
-    <div>
+        <br/>
         <a href="{% url 'cert-user-credential-create' object.user_id %}">Issue certificate</a>
     </div>
     <div>
         <br/>
-        <a href="{% url 'cert-user-list' %}">Back</a>
+        <a href="{% url 'cert-user-list' %}">List users</a>
     </div>
 {% endblock %}

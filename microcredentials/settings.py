@@ -121,5 +121,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/cert/users/'
+LOGIN_REDIRECT_URL = '/cert/credentials/'
 LOGOUT_REDIRECT_URL = '/login/'
