@@ -7,6 +7,7 @@ from django.views.generic.list import ListView
 from .models import Profile, Credential
 
 import json
+import re
 
 
 class UserListView(LoginRequiredMixin, ListView):
@@ -44,12 +45,16 @@ class CredentialDetailView(LoginRequiredMixin, DetailView):
 class CredentialCreateView(LoginRequiredMixin, CreateView):
     template_name_suffix = '_create'
     model = Credential
-    fields = ['title', 'content']
+    fields = ['title']
 
     def form_valid(self, form):
         form.instance.issuer_id = self.request.user.id
         form.instance.owner_id = self.kwargs['pk']
         form.instance.status = 'created'
+        content = self.request.POST.dict()
+        content.pop('csrfmiddlewaretoken', None)
+        content.pop('title', None)
+        form.instance.content = json.dumps(content)
         return super(CredentialCreateView, self).form_valid(form)
 
     def get_success_url(self):
@@ -57,5 +62,8 @@ class CredentialCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CredentialCreateView, self).get_context_data(**kwargs)
-        context.update({'profile': Profile.objects.filter(user__id=self.kwargs['pk']).first()})
+        context.update({'owner_profile': Profile.objects.get(user__id=self.kwargs['pk'])})
+        cert_template = Profile.objects.get(user__id=self.request.user.id).cert_template
+        content_fields = re.findall(r'{{\s*content\.([A-Za-z0-9_]+)\s*}}', cert_template)
+        context.update({'content_fields': content_fields})
         return context
