@@ -3,6 +3,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.views import View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
@@ -14,14 +15,16 @@ import json
 import re
 
 
-def proceed_to_home(request):
-    if request.user.is_superuser:
-        return redirect(to='admin:index')
-    elif any(p in request.user.get_all_permissions()
-           for p in ['cert.view_issuer_profiles', 'cert.view_owner_profiles']):
-        return redirect(to='cert-user-list')
-    else:
-        return redirect(to='cert-user-detail')
+class RedirectHomeView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        if request.user.is_superuser:
+            return redirect(to='admin:index')
+        elif any(p in request.user.get_all_permissions()
+                 for p in ['cert.view_issuer_profiles', 'cert.view_owner_profiles']):
+            return redirect(to='cert-user-list')
+        else:
+            return redirect(to='cert-user-detail')
 
 
 class UserListView(LoginRequiredMixin, ListView):
