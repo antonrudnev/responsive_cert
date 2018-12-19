@@ -1,3 +1,4 @@
+from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
@@ -36,6 +37,9 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         return int(self.kwargs.get('pk', None) or self.request.user.id)
 
     def get_object(self, **kwargs):
+        if self.request.user.is_superuser:
+            logout(self.request)
+            raise PermissionDenied
         try:
             profile = Profile.objects.get(pk=self.get_user_id())
             if ((self.request.user.has_perm('cert.view_owner_profiles') and

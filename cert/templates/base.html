@@ -8,14 +8,16 @@
     <main>
         {% block content %}
         {% endblock %}
+    </main>
+    {% block controls %}
         <div>
             <br/>
             <a href="{% url 'cert-user-detail' %}">Home</a>
         </div>
-    </main>
-    {% block logout %}
-        <br/>
-        <a href="/logout/">Logout</a> {{ user.get_full_name }}
+        <div>
+            <br/>
+            <a href="/logout/">Logout</a> {{ user.get_full_name }}
+        </div>
     {% endblock %}
 </body>
 </html>

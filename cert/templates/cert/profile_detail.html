@@ -28,12 +28,16 @@
     {% if not owned_credentials and not issued_credentials %}
         <div>No certificates to display</div>
     {% endif %}
-    <div>
-        <br/>
-        <a href="{% url 'cert-user-credential-create' object.user_id %}">Issue certificate</a>
-    </div>
-    <div>
-        <br/>
-        <a href="{% url 'cert-user-list' %}">List users</a>
-    </div>
+    {% if perms.cert.issue_credentials and profile.user.id != user.id %}
+        <div>
+            <br/>
+            <a href="{% url 'cert-user-credential-create' object.user_id %}">Issue certificate</a>
+        </div>
+    {% endif %}
+    {% if perms.cert.view_issuer_profiles or perms.cert.view_owner_profiles %}
+        <div>
+            <br/>
+            <a href="{% url 'cert-user-list' %}">List users</a>
+        </div>
+    {% endif %}
 {% endblock %}
