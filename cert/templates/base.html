@@ -5,19 +5,28 @@
     <title>{% block title %}Microcredentials{% endblock %}</title>
 </head>
 <body>
-    <main>
-        {% block content %}
+    {% if not user.is_superuser %}
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+        {% block controls %}
+            {% if profile.user.id != user.id %}
+                <div>
+                    <br/>
+                    <a href="{% url 'cert-user-detail' %}">My profile</a>
+                </div>
+            {% endif %}
+            <div>
+                <br/>
+                <a href="/logout/">Logout</a> {{ user.get_full_name }}
+            </div>
         {% endblock %}
-    </main>
-    {% block controls %}
+    {% else %}
         <div>
             <br/>
-            <a href="{% url 'cert-user-detail' %}">Home</a>
+            Click <a href="{% url 'admin:index' %}">here</a> if you are administrator
         </div>
-        <div>
-            <br/>
-            <a href="/logout/">Logout</a> {{ user.get_full_name }}
-        </div>
-    {% endblock %}
+    {% endif %}
 </body>
 </html>

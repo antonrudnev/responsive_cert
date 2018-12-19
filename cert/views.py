@@ -1,7 +1,7 @@
-from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
@@ -14,14 +14,24 @@ import json
 import re
 
 
+def proceed_to_home(request):
+    if request.user.is_superuser:
+        return redirect(to='admin:index')
+    elif any(p in request.user.get_all_permissions()
+           for p in ['cert.view_issuer_profiles', 'cert.view_owner_profiles']):
+        return redirect(to='cert-user-list')
+    else:
+        return redirect(to='cert-user-detail')
+
+
 class UserListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         permissions_filter = []
-        if self.request.user.has_perm('cert.view_owner_profiles'):
-            permissions_filter.append('own_credentials')
         if self.request.user.has_perm('cert.view_issuer_profiles'):
             permissions_filter.append('issue_credentials')
+        if self.request.user.has_perm('cert.view_owner_profiles'):
+            permissions_filter.append('own_credentials')
         if permissions_filter:
             return Profile.objects.filter(user__groups__permissions__codename__in=permissions_filter)
         else:
@@ -37,9 +47,6 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         return int(self.kwargs.get('pk', None) or self.request.user.id)
 
     def get_object(self, **kwargs):
-        if self.request.user.is_superuser:
-            logout(self.request)
-            raise PermissionDenied
         try:
             profile = Profile.objects.get(pk=self.get_user_id())
             if ((self.request.user.has_perm('cert.view_owner_profiles') and

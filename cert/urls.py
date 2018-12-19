@@ -3,6 +3,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('', views.proceed_to_home),
     path('users/', views.UserListView.as_view(), name='cert-user-list'),
     path('users/<pk>/', views.UserDetailView.as_view(), name='cert-user-detail'),
     path('users/<pk>/issue/', views.CredentialCreateView.as_view(), name='cert-user-credential-create'),
