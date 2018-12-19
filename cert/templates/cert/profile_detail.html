@@ -8,7 +8,11 @@
         {% endif %}
     </h3>
     {% if owned_credentials %}
-        <h3>Certificates:</h3>
+        {% if profile.user.id == user.id or perms.cert.view_all_credentials %}
+            <h3>Certificates:</h3>
+        {% else %}
+            <h3>Managed certificates:</h3>
+        {% endif %}
         {% for credential in owned_credentials %}
             <li>
                 <span>{{ credential.title }} ({{ credential.issuer.organization }})</span>
