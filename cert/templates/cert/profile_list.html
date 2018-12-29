@@ -1,13 +1,29 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Users:</h1>
-    {% for profile in object_list %}
-        <li>
-            <span>{{ profile }} - {{ profile.description }}</span>
-            <a href="{% url 'cert-user-detail' profile.user_id %}">Details</a>
-        </li>
-    {% empty %}
-        <li>No users</li>
-    {% endfor %}
+    <h4 class="d-none d-md-block mt-4">Available users:</h4>
+    <div class="list-group mt-4">
+        {% for profile in object_list %}
+            <a class="list-group-item list-group-item-action" href="{% url 'cert-user-detail' profile.user_id %}">
+                <div class="d-flex w-100 justify-content-between">
+                    <div>
+                        <h5 class="mb-1">{{ profile.user.last_name }}, {{ profile.user.first_name }}</h5>
+                        <div>{{ profile.organization|default_if_none:"" }}</div>
+                        <small>{{ profile.description|default_if_none:"" }}</small>
+                    </div>
+                    <small class="text-nowrap">Joined on<br>{{ profile.user.date_joined|date:"M j, Y" }}</small>
+                </div>
+                <div>
+                    {% if profile.issued.all|length %}
+                        <span class="badge badge-secondary">Issued: {{ profile.issued.all|length }}</span>
+                    {% endif %}
+                    {% if profile.owned.all|length %}
+                        <span class="badge badge-info">Owned: {{ profile.owned.all|length }}</span>
+                    {% endif %}
+                </div>
+            </a>
+        {% empty %},
+            <div class="list-group-item">No available users</div>
+        {% endfor %}
+    </div>
 {% endblock %}

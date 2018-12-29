@@ -23,8 +23,8 @@ class Profile(models.Model):
 
 
 class Credential(models.Model):
-    issuer = models.ForeignKey(Profile, related_name='issuers', on_delete=models.CASCADE, null=False, blank=False)
-    owner = models.ForeignKey(Profile, related_name='owners', on_delete=models.CASCADE, null=False, blank=False)
+    issuer = models.ForeignKey(Profile, related_name='issued', on_delete=models.CASCADE, null=False, blank=False)
+    owner = models.ForeignKey(Profile, related_name='owned', on_delete=models.CASCADE, null=False, blank=False)
     title = models.CharField(max_length=256, null=False, blank=False)
     content = models.TextField(null=False, blank=False)
     transaction_id = models.TextField(null=True, blank=True)

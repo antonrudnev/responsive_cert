@@ -3,16 +3,15 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-    <h1>Login</h1>
-    {% if next %}
-    <form action="/login/?next={{ next }}" method="post">
-    {% else %}
-    <form action="/login/" method="post">
-    {% endif %}
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input id="feedback-submit" type="submit" value="Login">
-    </form>
-{% endblock %}
+    <div class="d-none d-lg-block">
+        <div class="d-flex justify-content-center">
+        <div>
+            {% include "registration/login_form.html" %}
+        </div>
+    </div>
+    </div>
 
-{% block controls %}{% endblock %}
+    <div class="d-block d-lg-none">
+        {% include "registration/login_form.html" %}
+    </div>
+{% endblock %}
