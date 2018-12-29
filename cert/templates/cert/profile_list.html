@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h4 class="d-none d-md-block mt-4">Available users:</h4>
-    <div class="list-group mt-4">
+    <h4 class="d-none d-md-block mb-4">Available users:</h4>
+    <div class="list-group">
         {% for profile in object_list %}
             <a class="list-group-item list-group-item-action" href="{% url 'cert-user-detail' profile.user_id %}">
                 <div class="d-flex w-100 justify-content-between">
