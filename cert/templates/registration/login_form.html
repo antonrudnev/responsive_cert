@@ -8,11 +8,11 @@
         {% endif %}
             {% csrf_token %}
             <div class="form-group">
-                <label for="username">{{ form.username.label_tag }}</label>
+                <label for="username">{{ form.username.label }}</label>
                 <input class="form-control input-block" type="text" name="{{ form.username.name }}" required="{{ form.username.required }}" autocapitalize="off" autocorrect="off" autofocus="autofocus">
             </div>
             <div class="form-group">
-                <label for="password">{{ form.password.label_tag }}</label>
+                <label for="password">{{ form.password.label }}</label>
                 <input class="form-control input-block" type="password" name="{{ form.password.name }}" required="{{ form.password.required }}">
             </div>
             <div class="form-group">

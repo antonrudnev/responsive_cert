@@ -1,47 +1,53 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{{ profile }}</h1>
-    <h3>{{ profile.description|title }}
-        {% if profile.organization %}
-            on behalf of {{ profile.organization }}
+    <div class="jumbotron bg-light">
+        <p class="display-4">{{ profile.user.first_name }} {{ profile.user.last_name }}</p>
+        <p class="lead">{{ profile.description|title }}
+            {% if profile.organization %}
+                on behalf of {{ profile.organization }}
+            {% endif %}
+        </p>
+        {% if owned_credentials %}
+            {% if profile.user.id == user.id or perms.cert.view_all_credentials %}
+                <h5>Certificates:</h5>
+            {% else %}
+                <h5>Managed certificates:</h5>
+            {% endif %}
+            {% for credential in owned_credentials %}
+                <a class="bs-callout bs-callout-success list-group-item list-group-item-action" href="{% url "cert-credential-detail" credential.id %}">
+                    <p class="lead">{{ credential.title }}</p>
+                    <div class="d-flex justify-content-between">
+                        <small><strong>{{ credential.issuer.organization }}</strong></small>
+                        <small class="text-nowrap">{{ credential.created_on|date:"M j, Y" }}</small>
+                    </div>
+                </a>
+            {% endfor %}
         {% endif %}
-    </h3>
-    {% if owned_credentials %}
-        {% if profile.user.id == user.id or perms.cert.view_all_credentials %}
-            <h3>Certificates:</h3>
-        {% else %}
-            <h3>Managed certificates:</h3>
+        {% if issued_credentials %}
+            <h5>Issued certificates:</h5>
+            {% for credential in issued_credentials %}
+                <a class="bs-callout bs-callout-success list-group-item list-group-item-action" href="{% url "cert-credential-detail" credential.id %}">
+                    <p class="lead">{{ credential.title }}</p>
+                    <div class="d-flex justify-content-between">
+                        <small><strong>{{ credential.owner }}</strong></small>
+                        <small class="text-nowrap">{{ credential.created_on|date:"M j, Y" }}</small>
+                    </div>
+                </a>
+            {% endfor %}
         {% endif %}
-        {% for credential in owned_credentials %}
-            <li>
-                <span>{{ credential.title }} ({{ credential.issuer.organization }})</span>
-                <a href="{% url 'cert-credential-detail' credential.id %}">View</a>
-            </li>
-        {% endfor %}
-    {% endif %}
-    {% if issued_credentials %}
-        <h3>Certificates issued to other users:</h3>
-        {% for credential in issued_credentials %}
-            <li>
-                {{ credential.title }} ({{ credential.owner }})
-                <a href="{% url 'cert-credential-detail' credential.id %}">View</a>
-            </li>
-        {% endfor %}
-    {% endif %}
-    {% if not owned_credentials and not issued_credentials %}
-        <div>No certificates to display</div>
-    {% endif %}
-    {% if perms.cert.issue_credentials and profile.user.id != user.id %}
-        <div>
-            <br/>
-            <a href="{% url 'cert-user-credential-create' object.user_id %}">Issue certificate</a>
-        </div>
-    {% endif %}
+        {% if not owned_credentials and not issued_credentials %}
+            <h6>No certificates to display</h6>
+        {% endif %}
+        {% if perms.cert.issue_credentials and profile.user.id != user.id %}
+            <div class="mt-4">
+                <a class="btn btn-success" href="{% url 'cert-user-credential-create' object.user_id %}">New certificate</a>
+            </div>
+        {% endif %}
+    </div>
     {% if perms.cert.view_issuer_profiles or perms.cert.view_owner_profiles %}
-        <div>
-            <br/>
-            <a href="{% url 'cert-user-list' %}">List users</a>
+        <div class="mt-4">
+            <a class="btn btn-primary" href="{% url 'cert-user-list' %}">Back to  users</a>
         </div>
     {% endif %}
 {% endblock %}

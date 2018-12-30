@@ -4,7 +4,7 @@
 {% block content %}
     <h4 class="d-none d-md-block mb-4">Available users:</h4>
         {% for profile in object_list %}
-            <a class="bs-callout bs-callout-{{ profile.user|has_group:"owners"|yesno:"primary,secondary" }} list-group-item list-group-item-action" href="{% url 'cert-user-detail' profile.user_id %}">
+            <a class="bs-callout bs-callout-{{ profile.user|has_group:"owners"|yesno:"primary,default" }} list-group-item list-group-item-action" href="{% url 'cert-user-detail' profile.user_id %}">
                 <div class="d-flex w-100 justify-content-between">
                     <div>
                         <h5 class="mb-1">{{ profile.user.last_name }}, {{ profile.user.first_name }}</h5>
@@ -23,6 +23,6 @@
                 </div>
             </a>
         {% empty %},
-            <div class="bs-callout bs-callout-secondary">No available users</div>
+            <p class="lead">No available users</p>
         {% endfor %}
 {% endblock %}
