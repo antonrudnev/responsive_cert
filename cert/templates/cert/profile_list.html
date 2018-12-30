@@ -7,7 +7,7 @@
             <a class="bs-callout bs-callout-{{ profile.user|has_group:"owners"|yesno:"primary,default" }} list-group-item list-group-item-action" href="{% url 'cert-user-detail' profile.user_id %}">
                 <div class="d-flex w-100 justify-content-between">
                     <div>
-                        <h5 class="mb-1">{{ profile.user.last_name }}, {{ profile.user.first_name }}</h5>
+                        <h5 class="mb-1">{{ profile.user.first_name }} {{ profile.user.last_name }}</h5>
                         <div>{{ profile.organization|default_if_none:"" }}</div>
                         <small>{{ profile.description|default_if_none:"" }}</small>
                     </div>

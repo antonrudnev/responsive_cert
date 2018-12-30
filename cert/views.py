@@ -36,7 +36,9 @@ class UserListView(LoginRequiredMixin, ListView):
         if self.request.user.has_perm('cert.view_owner_profiles'):
             permissions_filter.append('own_credentials')
         if permissions_filter:
-            return Profile.objects.filter(user__groups__permissions__codename__in=permissions_filter)
+            return Profile.objects.filter(user__groups__permissions__codename__in=permissions_filter).order_by(
+                'user__first_name',
+                'user__last_name')
         else:
             raise PermissionDenied
 
@@ -54,8 +56,8 @@ class UserDetailView(LoginRequiredMixin, DetailView):
             profile = Profile.objects.get(pk=self.get_user_id())
             if ((self.request.user.has_perm('cert.view_owner_profiles') and
                  profile.user.has_perm('cert.own_credentials')) or
-                (self.request.user.has_perm('cert.view_issuer_profiles')
-                 and profile.user.has_perm('cert.issue_credentials'))) or self.is_your_profile():
+                (self.request.user.has_perm('cert.view_issuer_profiles') and
+                 profile.user.has_perm('cert.issue_credentials'))) or self.is_your_profile():
                 return profile
             else:
                 raise PermissionDenied
@@ -67,9 +69,13 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         q_filters = Q(owner__user_id=self.get_user_id())
         if not (self.request.user.has_perm('cert.view_all_credentials') or self.is_your_profile()):
             q_filters.add(Q(issuer__user_id=self.request.user.id), Q.AND)
-        context.update({'owned_credentials': Credential.objects.filter(q_filters)})
+        context.update({'owned_credentials': Credential.objects.filter(q_filters).order_by('title',
+                                                                                           'issuer__organization')})
         if self.request.user.has_perm('cert.view_all_credentials') or self.is_your_profile():
-            context.update({'issued_credentials': Credential.objects.filter(issuer__user_id=self.get_user_id())})
+            context.update({'issued_credentials':
+                Credential.objects.filter(issuer__user_id=self.get_user_id()).order_by('title',
+                                                                                       'owner__user__first_name',
+                                                                                       'owner__user__last_name')})
         return context
 
 
