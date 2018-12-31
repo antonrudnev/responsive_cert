@@ -41,13 +41,23 @@
         {% endif %}
         {% if perms.cert.issue_credentials and profile.user.id != user.id %}
             <div class="mt-4">
-                <a class="btn btn-success" href="{% url 'cert-user-credential-create' object.user_id %}">New certificate</a>
+                <div class="d-block d-lg-none">
+                    <a class="btn btn-outline-success btn-block" href="{% url 'cert-user-credential-create' object.user_id %}">New certificate</a>
+                </div>
+                <div class="d-none d-lg-block">
+                    <a class="btn btn-success" href="{% url 'cert-user-credential-create' object.user_id %}">New certificate</a>
+                </div>
             </div>
         {% endif %}
     </div>
     {% if perms.cert.view_issuer_profiles or perms.cert.view_owner_profiles %}
         <div class="mt-4">
-            <a class="btn btn-primary" href="{% url 'cert-user-list' %}">Back to  users</a>
+            <div class="d-block d-lg-none">
+                <a class="btn btn-primary btn-block" href="{% url 'cert-user-list' %}">Back to  users</a>
+            </div>
+            <div class="d-none d-lg-block">
+                <a class="btn btn-primary" href="{% url 'cert-user-list' %}">Back to  users</a>
+            </div>
         </div>
     {% endif %}
 {% endblock %}

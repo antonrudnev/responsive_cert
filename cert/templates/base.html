@@ -23,7 +23,7 @@
                                     {{ user.get_full_name }}
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarProfile">
-                                    <a class="dropdown-item" href="{% url 'cert-user-detail' %}">My Profile</a>
+                                    <a class="dropdown-item" href="{% url 'cert-user-detail' %}">My profile</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="/logout/">Logout</a>
                                 </div>
@@ -33,7 +33,6 @@
                 {% endif %}
             </nav>
         </header>
-
         {% if not user.is_superuser %}
             <main role="main" class="flex-shrink-0 my-5">
                 <div class="container my-4">
@@ -41,9 +40,6 @@
                     {% endblock %}
                 </div>
             </main>
-            {% block controls %}
-
-            {% endblock %}
         {% else %}
             <div>
                 <br/>
